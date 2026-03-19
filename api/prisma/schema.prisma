@@ -1,0 +1,270 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://admin:postgres123@localhost:5432/dw_marine?schema=public"
+}
+
+// ==========================================
+// CORE TENANCY & ACCESS (Multi-Location MVP)
+// ==========================================
+
+model Tenant {
+  id              String      @id @default(uuid())
+  name            String      @unique // e.g. "David Wade Marine Master"
+  timeZone        String      @default("America/Chicago")
+  createdAt       DateTime    @default(now())
+
+  locations       Location[]
+  users           User[]
+  customers       Customer[]
+  leads           Lead[]
+  inventory       PartItem[]
+  repairOrders    RepairOrder[]
+  transactions    Transaction[]
+}
+
+model Location {
+  id              String      @id @default(uuid())
+  tenantId        String
+  tenant          Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  name            String      // e.g. "Main Showroom", "Service Warehouse"
+  address         String?
+  isServiceCenter Boolean     @default(true)
+  
+  users           User[]
+  inventory       PartItem[]
+  repairOrders    RepairOrder[]
+}
+
+model User {
+  id              String      @id @default(uuid())
+  tenantId        String
+  tenant          Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  locationId      String?
+  location        Location?   @relation(fields: [locationId], references: [id])
+  
+  email           String      @unique
+  name            String
+  role            Role        @default(EMPLOYEE)
+  
+  // Payroll & Time
+  hourlyRate      Decimal?    @db.Decimal(10, 2)
+  pinCode         String?     // Override/Login Pin
+  
+  assignedROs     RepairOrder[] @relation("TechRO")
+  ownedLeads      Lead[]        @relation("LeadOwner")
+  history         AuditLog[]
+}
+
+enum Role {
+  OWNER
+  GENERAL_MANAGER
+  SERVICE_MANAGER
+  PARTS_MANAGER
+  SALES_REP
+  TECHNICIAN
+  CASHIER
+  EMPLOYEE
+}
+
+// ==========================================
+// CRM, LEADS & ASSETS
+// ==========================================
+
+model Customer {
+  id              String      @id @default(uuid())
+  tenantId        String
+  tenant          Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  type            CustomerType @default(INDIVIDUAL)
+  name            String
+  email           String?
+  phone           String?
+  loyaltyTier     String?     @default("STANDARD")
+  
+  assets          Asset[]
+  repairOrders    RepairOrder[]
+  transactions    Transaction[]
+  createdAt       DateTime    @default(now())
+}
+
+enum CustomerType {
+  INDIVIDUAL
+  HOUSEHOLD_GROUP // Rolled up LTV
+  COMMERCIAL
+}
+
+model Asset {
+  id              String      @id @default(uuid())
+  customerId      String
+  customer        Customer    @relation(fields: [customerId], references: [id])
+  
+  make            String      // e.g., "Yamaha", "SeaRay"
+  model           String
+  year            Int
+  primaryHIN      String?     @unique // Hull ID
+  motorSerial     String?
+  trailerVIN      String?
+  
+  repairOrders    RepairOrder[]
+}
+
+model Lead {
+  id              String      @id @default(uuid())
+  tenantId        String
+  tenant          Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  ownerId         String?
+  owner           User?       @relation("LeadOwner", fields: [ownerId], references: [id])
+  
+  name            String
+  contactInfo     String
+  status          LeadStatus  @default(NEW_UNTOUCHED)
+  interestPayload String?     // e.g., "Looking for 2024 Regal"
+  aiScore         Int?        // 1-100 Probable Close
+  
+  lastActionAt    DateTime    @default(now()) // Governs SLA timers
+}
+
+enum LeadStatus {
+  NEW_UNTOUCHED
+  ATTEMPTED_CONTACT
+  QUOTING
+  PENDING_DEPOSIT
+  CLOSED_WON
+  CLOSED_LOST
+}
+
+// ==========================================
+// SERVICE LANE & OPERATIONS
+// ==========================================
+
+model RepairOrder {
+  id              String      @id @default(uuid())
+  tenantId        String
+  tenant          Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  locationId      String
+  location        Location    @relation(fields: [locationId], references: [id])
+  
+  customerId      String
+  customer        Customer    @relation(fields: [customerId], references: [id])
+  assetId         String
+  asset           Asset       @relation(fields: [assetId], references: [id])
+  techId          String?
+  tech            User?       @relation("TechRO", fields: [techId], references: [id])
+  
+  status          ROStatus    @default(NEW)
+  promisedAt      DateTime?   
+  complaint       String
+  hasComebackRisk Boolean     @default(false)
+  
+  laborLines      RO_Labor[]
+  partLines       RO_Part[]
+  auditLogs       AuditLog[]
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+enum ROStatus {
+  NEW
+  DIAGNOSING
+  WAITING_ON_PARTS
+  IN_PROGRESS
+  QA_REVIEW
+  READY
+  CLOSED
+}
+
+model RO_Labor {
+  id              String      @id @default(uuid())
+  roId            String
+  repairOrder     RepairOrder @relation(fields: [roId], references: [id], onDelete: Cascade)
+  
+  description     String
+  flatRateHours   Decimal     @db.Decimal(5, 2) // Billed Customer
+  clockedHours    Decimal?    @db.Decimal(5, 2) // Tech physical
+  ratePerHour     Decimal     @db.Decimal(10, 2)
+}
+
+model RO_Part {
+  id              String      @id @default(uuid())
+  roId            String
+  repairOrder     RepairOrder @relation(fields: [roId], references: [id], onDelete: Cascade)
+  partId          String
+  part            PartItem    @relation(fields: [partId], references: [id])
+  
+  qty             Int
+  retailPrice     Decimal     @db.Decimal(10, 2)
+  cost            Decimal     @db.Decimal(10, 2)
+}
+
+// ==========================================
+// INVENTORY LOGISTICS
+// ==========================================
+
+model PartItem {
+  id              String      @id @default(uuid())
+  tenantId        String
+  tenant          Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  locationId      String
+  location        Location    @relation(fields: [locationId], references: [id])
+  
+  sku             String      
+  name            String
+  category        String?
+  vendor          String?
+  
+  qtyOnHand       Int         @default(0)
+  qtyReserved     Int         @default(0) // Locked to ROs
+  minBound        Int         @default(0)
+  maxBound        Int         @default(10)
+  
+  macCost         Decimal     @db.Decimal(10, 2) // Moving Avg Cost
+  price           Decimal     @db.Decimal(10, 2) 
+  
+  roUsages        RO_Part[]
+  
+  @@unique([tenantId, sku])
+}
+
+// ==========================================
+// FINANCE & AUDIT
+// ==========================================
+
+model Transaction {
+  id              String      @id @default(uuid())
+  tenantId        String
+  tenant          Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  customerId      String?
+  customer        Customer?   @relation(fields: [customerId], references: [id])
+  
+  type            TxType
+  grossTotal      Decimal     @db.Decimal(15, 2)
+  taxCollected    Decimal     @db.Decimal(12, 2)
+  tenderType      String      // CASH, CARD, SPLIT
+  
+  glExported      Boolean     @default(false)
+  createdAt       DateTime    @default(now())
+}
+
+enum TxType {
+  POS_SALE
+  RO_INVOICE
+  DEPOSIT_TAKEN
+  REFUND
+}
+
+model AuditLog {
+  id              String      @id @default(uuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id])
+  action          String      // e.g., "FLAT_RATE_TOGGLED", "AI_CUST_REPLY_SENT"
+  targetTable     String?
+  targetId        String?
+  payload         String?     // JSON Diff
+  createdAt       DateTime    @default(now())
+}
