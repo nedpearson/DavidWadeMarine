@@ -40,15 +40,37 @@ export const EmployeeHub = () => {
               <span style={{ fontSize: '1.25rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-text-main)' }}>7h 14m</span>
             </div>
             
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-              <div>
-                <span style={{ fontWeight: 600, display: 'block' }}>Ned Admin</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--color-success)' }}>Punched IN at 7:55 AM</span>
+            {/* Gamified QA Leaderboard Hook */}
+            <div className="animate-fade-in" style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid var(--color-border)', marginTop: '0.5rem' }}>
+              <h3 style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', marginBottom: '0.75rem', display: 'flex', justifyContent: 'space-between' }}>
+                Tech Leaderboard 
+                <span style={{ color: 'var(--color-accent)' }}>Live Rank</span>
+              </h3>
+              
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                <div>
+                  <span style={{ display: 'inline-block', width: '20px', height: '20px', background: 'var(--color-primary)', color: '#fff', borderRadius: '50%', textAlign: 'center', fontSize: '0.75rem', lineHeight: '20px', marginRight: '8px' }}>1</span>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Alex H.</span>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-success)' }}>184% Efficient</span>
+                  <span style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)' }}>0 Rework Comebacks</span>
+                </div>
               </div>
-              <span style={{ fontSize: '1.25rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-text-main)' }}>7h 23m</span>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <span style={{ display: 'inline-block', width: '20px', height: '20px', background: 'rgba(255,255,255,0.1)', color: '#fff', borderRadius: '50%', textAlign: 'center', fontSize: '0.75rem', lineHeight: '20px', marginRight: '8px' }}>2</span>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Mike T.</span>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-danger)' }}>310% Efficient</span>
+                  <span style={{ fontSize: '0.7rem', color: 'var(--color-danger)' }}>14% Rework Comeback Ratio!</span>
+                </div>
+              </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)', opacity: 0.5 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1rem', opacity: 0.5 }}>
               <div>
                 <span style={{ fontWeight: 600, display: 'block' }}>Sarah Larson</span>
                 <span style={{ fontSize: '0.75rem', color: 'var(--color-danger)' }}>Missed Shift - Unexcused</span>

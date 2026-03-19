@@ -148,9 +148,18 @@ export const CrmHub = () => {
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div style={{ paddingLeft: '1rem', borderLeft: '2px solid var(--color-border)' }}>
-                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', margin: '0 0 0.25rem 0' }}>Today 10:14 AM - Web Intake</p>
-                <div style={{ background: 'rgba(255,255,255,0.03)', padding: '0.75rem', borderRadius: '0 8px 8px 8px', fontSize: '0.9rem' }}>
-                  "Need to schedule winterization for my Yamaha. Do you guys do shrinkwrapping?"
+                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', margin: '0 0 0.25rem 0' }}>Today 10:14 AM - Twilio MMS Intake</p>
+                <div style={{ display: 'flex', gap: '1rem', background: 'rgba(255,255,255,0.03)', padding: '0.75rem', borderRadius: '0 8px 8px 8px' }}>
+                  <div style={{ width: '120px', height: '80px', background: 'rgba(239, 68, 68, 0.1)', border: '2px solid var(--color-danger)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+                    <img src="https://images.unsplash.com/photo-1544414603-f3c5aa667ea6" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7 }} alt="Damaged Engine Block" />
+                    <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <div className="glow-pulse" style={{ width: '40px', height: '40px', border: '3px solid red', borderRadius: '50%' }}></div>
+                    </div>
+                  </div>
+                  <div style={{ flex: 1, fontSize: '0.9rem' }}>
+                    "Need to schedule winterization for my Yamaha. Do you guys do shrinkwrapping? Also heard a cracking noise in lower unit, sending photo."
+                    <button style={{ marginTop: '0.5rem', display: 'block', background: 'transparent', color: 'var(--color-primary)', border: '1px solid var(--color-border)', padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem' }}>+ Append to RO Diagnostics</button>
+                  </div>
                 </div>
               </div>
 

@@ -36,6 +36,21 @@ export const Analytics = () => {
               <span style={{ color: 'var(--color-text-muted)' }}>Unit Sales Margin</span>
               <span style={{ fontWeight: 600 }}>18.2%</span>
             </div>
+            
+            {/* Hidden Cost Drill-Down Feature */}
+            <div className="animate-fade-in" style={{ padding: '0.75rem', background: 'rgba(239, 68, 68, 0.05)', borderRadius: '4px', borderLeft: '2px solid var(--color-danger)', marginBottom: '0.5rem' }}>
+              <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-danger)', textTransform: 'uppercase' }}>Margin Compression Drivers (MTD)</p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>
+                <span>Flooring Interest Escrow</span><span>-$2,410.00</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>
+                <span>Inbound Freight Overages</span><span>-$1,280.00</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                <span>Internal Dealer Prep Labor</span><span>-$4,100.00</span>
+              </div>
+            </div>
+
             <div style={{ display: 'flex', justifyContent: 'space-between', margin: '0.5rem 0', fontSize: '0.9rem' }}>
               <span style={{ color: 'var(--color-text-muted)' }}>Parts Counter Margin</span>
               <span style={{ fontWeight: 600 }}>42.8%</span>
