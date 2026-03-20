@@ -1,5 +1,6 @@
-import React from 'react';
-import { Box, Package, Truck, AlertTriangle, ArrowRightLeft } from 'lucide-react';
+import React, { useState } from 'react';
+import { Box, Package, Truck, ArrowRightLeft } from 'lucide-react';
+import { useDrilldown } from '../contexts/DrilldownContext';
 
 const mockInventory = [
   { sku: 'YAM-69J-13440-03', name: 'Yamaha Oil Filter F150', category: 'Maintenance', vendor: 'Yamaha Outboards', onHand: 14, min: 20, max: 50, cost: '$18.50', status: 'BELOW_MIN' },
@@ -8,7 +9,8 @@ const mockInventory = [
 ];
 
 export const Inventory = () => {
-  const [expandedRow, setExpandedRow] = React.useState<string | null>(null);
+  const [expandedRow, setExpandedRow] = useState<string | null>(null);
+  const { pushDrilldown } = useDrilldown();
 
   return (
     <div className="animate-fade-in stagger-1" style={{ height: 'calc(100vh - 120px)', display: 'flex', flexDirection: 'column', gap: '1.5rem', paddingBottom: '1rem' }}>
@@ -32,7 +34,11 @@ export const Inventory = () => {
 
       {/* KPI Row */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
-        <div className="glass-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div 
+          className="glass-card" 
+          style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', cursor: 'pointer' }}
+          onClick={() => pushDrilldown({ type: 'INV_CAPITAL_VALUE', title: 'Capital Value Details' })}
+        >
           <h3 style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Capital Value (On-Hand)</h3>
           <p style={{ fontSize: '2rem', fontWeight: 700, fontFamily: 'var(--font-display)', margin: 0 }}>$142,850.50</p>
         </div>
@@ -43,7 +49,11 @@ export const Inventory = () => {
             <button style={{ background: 'var(--color-primary)', color: '#fff', border: 'none', padding: '4px 12px', borderRadius: '4px', fontSize: '0.75rem' }}>Draft Stock PO</button>
           </div>
         </div>
-        <div className="glass-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', borderTop: '2px solid var(--color-danger)' }}>
+        <div 
+          className="glass-card" 
+          style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', borderTop: '2px solid var(--color-danger)', cursor: 'pointer' }}
+          onClick={() => pushDrilldown({ type: 'KPI_WAITING_ON_PARTS', title: 'Service Stalled' })}
+        >
           <h3 style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Service Stalled (Wait on Parts)</h3>
           <p style={{ fontSize: '2rem', fontWeight: 700, fontFamily: 'var(--font-display)', margin: 0, color: 'var(--color-danger)' }}>7 ROs</p>
         </div>

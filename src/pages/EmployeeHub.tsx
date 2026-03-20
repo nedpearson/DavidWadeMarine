@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { Users, Clock, AlertOctagon, CheckCircle, BrainCircuit } from 'lucide-react';
+import { useDrilldown } from '../contexts/DrilldownContext';
 
 const mockPayrollExceptions = [
   { id: 'TCL-99', employee: 'Mike Technician', anomaly: '300% Flat-Rate Variance', reason: 'Clocked 14h vs 35h Generated Billed', status: 'REQUIRES_GM_OVERRIDE' },
@@ -7,6 +7,7 @@ const mockPayrollExceptions = [
 ];
 
 export const EmployeeHub = () => {
+  const { pushDrilldown } = useDrilldown();
   return (
     <div className="animate-fade-in stagger-1" style={{ height: 'calc(100vh - 120px)', display: 'flex', flexDirection: 'column', gap: '1.5rem', paddingBottom: '1rem' }}>
       
@@ -90,7 +91,12 @@ export const EmployeeHub = () => {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {mockPayrollExceptions.map(exc => (
-              <div key={exc.id} className="glass-card" style={{ padding: '1.5rem', borderLeft: `4px solid ${exc.status === 'REQUIRES_GM_OVERRIDE' ? 'var(--color-danger)' : 'var(--color-warning)'}` }}>
+              <div 
+                key={exc.id} 
+                className="glass-card" 
+                style={{ padding: '1.5rem', borderLeft: `4px solid ${exc.status === 'REQUIRES_GM_OVERRIDE' ? 'var(--color-danger)' : 'var(--color-warning)'}`, cursor: 'pointer' }}
+                onClick={() => pushDrilldown({ type: 'HR_PAYROLL_EXCEPTION', id: exc.id, title: `Exception: ${exc.employee}` })}
+              >
                 
                 {/* AI Copilot Badge directly attached to the anomaly */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', paddingBottom: '0.5rem', borderBottom: '1px solid rgba(0, 240, 255, 0.1)' }}>

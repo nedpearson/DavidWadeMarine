@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { DrilldownProvider } from './contexts/DrilldownContext';
+import { DrilldownModal } from './components/DrilldownModal';
 import { 
   Building2, 
   LayoutDashboard, 
@@ -41,25 +43,12 @@ function App() {
     { path: '/settings', label: 'Dealership Rules', icon: SettingsIcon },
   ];
 
-  const getNavItemStyle = (path: string) => {
-    const isActive = location.pathname === path;
-    return `
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 20px;
-      margin: 4px 12px;
-      border-radius: var(--radius-md);
-      color: ${isActive ? 'var(--color-text-main)' : 'var(--color-text-muted)'};
-      background: ${isActive ? 'var(--color-primary-hover)' : 'transparent'};
-      font-weight: ${isActive ? '600' : '400'};
-      transition: all 0.2s ease;
-      cursor: pointer;
-    `.trim().replace(/\s+/g, ' '); // Inline styled-string approach for quick react scaffolding without emotion/styled-comps
-  };
+
 
   return (
-    <div className="app-container">
+    <DrilldownProvider>
+      <DrilldownModal />
+      <div className="app-container">
       {/* Sidebar Navigation */}
       <nav className="sidebar" style={{ width: isSidebarOpen ? 'var(--sidebar-width)' : '80px', overflowX: 'hidden' }}>
         <div style={{ 
@@ -83,7 +72,6 @@ function App() {
         <div style={{ padding: '24px 0', flex: 1 }}>
           {navItems.map((item) => {
             const Icon = item.icon;
-            const styleString = getNavItemStyle(item.path);
             
             // Apply raw inline styles via object translation (or use classNames if preferred, but for single-file demo this works perfectly)
             const isActive = location.pathname === item.path;
@@ -164,7 +152,8 @@ function App() {
           </Routes>
         </div>
       </main>
-    </div>
+      </div>
+    </DrilldownProvider>
   );
 }
 

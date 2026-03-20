@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Users, Phone, Mail, MessageSquare, AlertCircle, Ship, Search, ChevronRight, Loader2 } from 'lucide-react';
+import { useDrilldown } from '../contexts/DrilldownContext';
 
 const mockLeads = [
   { id: 'LD-889', name: 'John Doe', interest: 'Yamaha 150HP Repower', status: 'QUOTING', score: 85, sla: 'GREEN', owner: 'Ned Admin', lastContact: '2 hours ago' },
@@ -16,6 +17,7 @@ export const CrmHub = () => {
   const [activeTab, setActiveTab] = useState<'LEADS' | 'CUSTOMERS'>('LEADS');
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [aiDraft, setAiDraft] = useState<string | null>(null);
+  const { pushDrilldown } = useDrilldown();
 
   const handleGenerateAI = async () => {
     setIsAiLoading(true);
@@ -80,7 +82,12 @@ export const CrmHub = () => {
           <div style={{ overflowY: 'auto', flex: 1 }}>
             {activeTab === 'LEADS' ? (
               mockLeads.map(lead => (
-                <div key={lead.id} className="glass-card" style={{ margin: '0.5rem 1rem', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', borderLeft: `4px solid ${lead.sla === 'RED' ? 'var(--color-danger)' : lead.sla === 'YELLOW' ? 'var(--color-warning)' : 'var(--color-success)'}` }}>
+                <div 
+                  key={lead.id} 
+                  className="glass-card" 
+                  style={{ margin: '0.5rem 1rem', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', borderLeft: `4px solid ${lead.sla === 'RED' ? 'var(--color-danger)' : lead.sla === 'YELLOW' ? 'var(--color-warning)' : 'var(--color-success)'}` }}
+                  onClick={() => pushDrilldown({ type: 'LEAD_DETAIL', id: lead.id, title: `Lead: ${lead.name}` })}
+                >
                   <div>
                     <h4 style={{ margin: '0 0 0.25rem 0', fontWeight: 600 }}>{lead.name}</h4>
                     <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>{lead.interest}</p>
@@ -96,7 +103,12 @@ export const CrmHub = () => {
               ))
             ) : (
               mockCustomers.map(cust => (
-                <div key={cust.id} className="glass-card" style={{ margin: '0.5rem 1rem', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}>
+                <div 
+                  key={cust.id} 
+                  className="glass-card" 
+                  style={{ margin: '0.5rem 1rem', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
+                  onClick={() => pushDrilldown({ type: 'CUSTOMER_PROFILE', id: cust.id, title: `Customer: ${cust.name}` })}
+                >
                   <div>
                     <h4 style={{ margin: '0 0 0.25rem 0', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>{cust.name} <span style={{ fontSize: '0.7rem', color: 'var(--color-primary)', border: '1px solid var(--color-primary)', padding: '1px 6px', borderRadius: '12px' }}>{cust.type}</span></h4>
                     <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--color-text-muted)', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>

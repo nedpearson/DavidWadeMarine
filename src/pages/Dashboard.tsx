@@ -1,11 +1,11 @@
-import React from 'react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   LineChart, Line
 } from 'recharts';
 import { 
-  Wrench, AlertTriangle, TrendingUp, DollarSign, Clock, PackageCheck, Ship
+  Wrench, AlertTriangle, TrendingUp, DollarSign, Clock, PackageCheck
 } from 'lucide-react';
+import { useDrilldown } from '../contexts/DrilldownContext';
 
 const laborData = [
   { name: 'Mon', billed: 42, clocked: 38 },
@@ -25,6 +25,7 @@ const revenueData = [
 ];
 
 export const Dashboard = () => {
+  const { pushDrilldown } = useDrilldown();
   return (
     <div className="animate-fade-in stagger-1" style={{ paddingBottom: '2rem' }}>
       <header style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
@@ -49,7 +50,11 @@ export const Dashboard = () => {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
         
         {/* Service Capacity Widget */}
-        <div className="glass-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div 
+          className="glass-card" 
+          style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer' }}
+          onClick={() => pushDrilldown({ type: 'KPI_SERVICE_UTILIZATION', title: 'Service Utilization' })}
+        >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <h3 style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Service Utilization</h3>
             <Wrench size={20} color="var(--color-info)" />
@@ -64,7 +69,11 @@ export const Dashboard = () => {
         </div>
 
         {/* Bottleneck Widget */}
-        <div className="glass-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderTop: '2px solid var(--color-danger)' }}>
+        <div 
+          className="glass-card" 
+          style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', borderTop: '2px solid var(--color-danger)', cursor: 'pointer' }}
+          onClick={() => pushDrilldown({ type: 'KPI_WAITING_ON_PARTS', title: 'Waiting On Parts' })}
+        >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <h3 style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Waiting On Parts</h3>
             <AlertTriangle size={20} color="var(--color-danger)" />
@@ -78,7 +87,11 @@ export const Dashboard = () => {
         </div>
 
         {/* Commerce Widget */}
-        <div className="glass-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div 
+          className="glass-card" 
+          style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer' }}
+          onClick={() => pushDrilldown({ type: 'KPI_POS_REVENUE', title: 'POS & Sales Revenue' })}
+        >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <h3 style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '1px' }}>POS & Sales Revenue</h3>
             <DollarSign size={20} color="var(--color-success)" />
@@ -90,7 +103,11 @@ export const Dashboard = () => {
         </div>
 
         {/* Inventory Widget */}
-        <div className="glass-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div 
+          className="glass-card" 
+          style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer' }}
+          onClick={() => pushDrilldown({ type: 'KPI_READY_PICKUPS', title: 'Ready Pickups' })}
+        >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <h3 style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Ready Pickups</h3>
             <PackageCheck size={20} color="var(--color-accent)" />

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Settings as SettingsIcon, Shield, Sliders, LayoutGrid, MessageSquare, Zap, Clock, CalendarDays } from 'lucide-react';
+import { useState } from 'react';
+import { Settings as SettingsIcon, Shield, Sliders, LayoutGrid, MessageSquare, Zap, Clock } from 'lucide-react';
 
 const categories = [
   { id: 'modules', label: 'Feature Toggles (Modular)', icon: LayoutGrid },

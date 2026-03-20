@@ -1,7 +1,8 @@
-import React from 'react';
 import { PieChart, Download, Filter, TrendingUp, TrendingDown } from 'lucide-react';
+import { useDrilldown } from '../contexts/DrilldownContext';
 
 export const Analytics = () => {
+  const { pushDrilldown } = useDrilldown();
   return (
     <div className="animate-fade-in stagger-1" style={{ height: 'calc(100vh - 120px)', display: 'flex', flexDirection: 'column', gap: '1.5rem', paddingBottom: '1rem' }}>
       
@@ -25,7 +26,11 @@ export const Analytics = () => {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
         
         {/* Sales Margin Reporting */}
-        <div className="glass-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
+        <div 
+          className="glass-card" 
+          style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
+          onClick={() => pushDrilldown({ type: 'ANALYTICS_LABOR_PROFIT', title: 'Overall Gross Margin' })}
+        >
           <h3 style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '1rem' }}>Overall Gross Profit (MTD)</h3>
           <p style={{ fontSize: '2.5rem', fontWeight: 700, fontFamily: 'var(--font-display)', margin: '0 0 0.5rem 0', color: 'var(--color-success)' }}>28.4%</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-success)', fontSize: '0.85rem' }}>
@@ -59,7 +64,11 @@ export const Analytics = () => {
         </div>
 
         {/* Service Efficiency */}
-        <div className="glass-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
+        <div 
+          className="glass-card" 
+          style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
+          onClick={() => pushDrilldown({ type: 'KPI_SERVICE_UTILIZATION', title: 'Labor Profitability Analysis' })}
+        >
           <h3 style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '1rem' }}>Labor Profitability (MTD)</h3>
           <p style={{ fontSize: '2.5rem', fontWeight: 700, fontFamily: 'var(--font-display)', margin: '0 0 0.5rem 0', color: 'var(--color-warning)' }}>-1.2%</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-danger)', fontSize: '0.85rem' }}>
@@ -78,7 +87,11 @@ export const Analytics = () => {
         </div>
 
         {/* Cashflow Engine */}
-        <div className="glass-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
+        <div 
+          className="glass-card" 
+          style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
+          onClick={() => pushDrilldown({ type: 'ANALYTICS_PARTS_MARGIN', title: 'Operational Cashflow' })}
+        >
           <h3 style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '1rem' }}>Working Capital / Receivables</h3>
           <p style={{ fontSize: '2.5rem', fontWeight: 700, fontFamily: 'var(--font-display)', margin: '0 0 0.5rem 0', color: '#fff' }}>$84,200</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-danger)', fontSize: '0.85rem' }}>

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { DollarSign, FileCheck, ArrowUpRight, ArrowDownRight, Briefcase } from 'lucide-react';
+import { useState } from 'react';
+import { FileCheck, ArrowUpRight, ArrowDownRight, Briefcase } from 'lucide-react';
+import { useDrilldown } from '../contexts/DrilldownContext';
 
 const mockReceivables = [
   { id: 'INV-992', customer: 'Robert Fleet Services', amount: '$4,250.00', age: '14 Days', status: 'PENDING' },
@@ -13,6 +14,7 @@ const mockPayables = [
 
 export const FinanceOperations = () => {
   const [activeTab, setActiveTab] = useState<'RECEIVABLES' | 'PAYABLES'>('RECEIVABLES');
+  const { pushDrilldown } = useDrilldown();
 
   return (
     <div className="animate-fade-in stagger-1" style={{ height: 'calc(100vh - 120px)', display: 'flex', flexDirection: 'column', gap: '1.5rem', paddingBottom: '1rem' }}>
@@ -65,7 +67,11 @@ export const FinanceOperations = () => {
         {activeTab === 'RECEIVABLES' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {mockReceivables.map(inv => (
-              <div key={inv.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.5rem', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', borderLeft: `3px solid ${inv.status === 'OVERDUE' ? 'var(--color-danger)' : 'var(--color-success)'}` }}>
+              <div 
+                key={inv.id} 
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.5rem', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', borderLeft: `3px solid ${inv.status === 'OVERDUE' ? 'var(--color-danger)' : 'var(--color-success)'}`, cursor: 'pointer' }}
+                onClick={() => pushDrilldown({ type: 'FINANCE_AR_INVOICE', id: inv.id, title: `Invoice: ${inv.customer}` })}
+              >
                 <div>
                   <h4 style={{ margin: '0 0 0.25rem 0', fontSize: '1.1rem' }}>{inv.customer}</h4>
                   <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>Invoice {inv.id} • Aged {inv.age}</span>
@@ -84,7 +90,11 @@ export const FinanceOperations = () => {
         {activeTab === 'PAYABLES' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {mockPayables.map(po => (
-              <div key={po.po} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.5rem', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', borderLeft: `3px solid ${po.match === 'MATCHED_READY' ? 'var(--color-success)' : 'var(--color-warning)'}` }}>
+              <div 
+                key={po.po} 
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.5rem', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', borderLeft: `3px solid ${po.match === 'MATCHED_READY' ? 'var(--color-success)' : 'var(--color-warning)'}`, cursor: 'pointer' }}
+                onClick={() => pushDrilldown({ type: 'FINANCE_AP_BILL', id: po.po, title: `Payable: ${po.vendor}` })}
+              >
                 <div>
                   <h4 style={{ margin: '0 0 0.25rem 0', fontSize: '1.1rem' }}>{po.vendor}</h4>
                   <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>{po.po} • Due {po.due}</span>

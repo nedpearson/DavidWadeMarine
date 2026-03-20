@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Wrench, Clock, AlertTriangle, CheckCircle, MapPin, Anchor, X } from 'lucide-react';
+import { useState } from 'react';
+import { Wrench, Clock, Anchor, X } from 'lucide-react';
+import { useDrilldown } from '../contexts/DrilldownContext';
 
 interface RepairOrder {
   id: string;
@@ -31,6 +32,7 @@ export const ServiceBoard = () => {
   const [activeROs] = useState<RepairOrder[]>(initialROs);
   const [viewMode, setViewMode] = useState<'KANBAN' | 'YARD_MAP'>('KANBAN');
   const [selectedRO, setSelectedRO] = useState<RepairOrder | null>(null);
+  const { pushDrilldown } = useDrilldown();
 
   return (
     <div className="animate-fade-in stagger-1" style={{ height: 'calc(100vh - 120px)', display: 'flex', flexDirection: 'column' }}>
@@ -104,8 +106,16 @@ export const ServiceBoard = () => {
 
               {/* Cards Container */}
               <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                {matchingROs.map(ro => (
-                  <div onClick={() => setSelectedRO(ro)} key={ro.id} className="glass-card animate-fade-in" style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', borderLeft: `3px solid ${column.color}`, cursor: 'pointer' }}>
+                {matchingROs.map((ro: RepairOrder) => (
+                  <div 
+                    key={ro.id} 
+                    className="glass-card animate-fade-in" 
+                    style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', borderLeft: `3px solid ${column.color}`, cursor: 'pointer' }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      pushDrilldown({ type: 'RO_DETAIL', id: ro.id, title: `Repair Order: ${ro.id}` });
+                    }}
+                  >
                     
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <span style={{ fontWeight: 700, fontSize: '1rem', color: '#fff' }}>{ro.id}</span>
