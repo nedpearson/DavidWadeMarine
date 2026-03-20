@@ -33,9 +33,12 @@ export const EmployeeHub = () => {
           </h2>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+            <div 
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)', cursor: 'pointer' }}
+              onClick={() => pushDrilldown({ type: 'EMPLOYEE_PROFILE', id: 'EMP-01', title: 'Mike Technician' })}
+            >
               <div>
-                <span style={{ fontWeight: 600, display: 'block' }}>Mike Technician</span>
+                <span style={{ fontWeight: 600, display: 'block', color: 'var(--color-primary)' }}>Mike Technician</span>
                 <span style={{ fontSize: '0.75rem', color: 'var(--color-success)' }}>Punched IN at 8:04 AM</span>
               </div>
               <span style={{ fontSize: '1.25rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-text-main)' }}>7h 14m</span>
@@ -48,10 +51,13 @@ export const EmployeeHub = () => {
                 <span style={{ color: 'var(--color-accent)' }}>Live Rank</span>
               </h3>
               
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+              <div 
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', cursor: 'pointer' }}
+                onClick={() => pushDrilldown({ type: 'EMPLOYEE_PROFILE', id: 'EMP-02', title: 'Alex H.' })}
+              >
                 <div>
                   <span style={{ display: 'inline-block', width: '20px', height: '20px', background: 'var(--color-primary)', color: '#fff', borderRadius: '50%', textAlign: 'center', fontSize: '0.75rem', lineHeight: '20px', marginRight: '8px' }}>1</span>
-                  <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Alex H.</span>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-primary)' }}>Alex H.</span>
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-success)' }}>184% Efficient</span>
@@ -71,9 +77,12 @@ export const EmployeeHub = () => {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1rem', opacity: 0.5 }}>
+            <div 
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1rem', opacity: 0.5, cursor: 'pointer' }}
+              onClick={() => pushDrilldown({ type: 'EMPLOYEE_PROFILE', id: 'EMP-03', title: 'Sarah Larson' })}
+            >
               <div>
-                <span style={{ fontWeight: 600, display: 'block' }}>Sarah Larson</span>
+                <span style={{ fontWeight: 600, display: 'block', color: 'var(--color-primary)' }}>Sarah Larson</span>
                 <span style={{ fontSize: '0.75rem', color: 'var(--color-danger)' }}>Missed Shift - Unexcused</span>
               </div>
               <span style={{ fontSize: '1.25rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: 'var(--color-text-muted)' }}>0h 0m</span>

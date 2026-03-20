@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { DrilldownProvider } from './contexts/DrilldownContext';
 import { DrilldownModal } from './components/DrilldownModal';
+import { WidgetProvider } from './contexts/WidgetContext';
+import { FilterProvider } from './contexts/FilterContext';
+import { GlobalFilterBar } from './components/GlobalFilterBar';
 import { 
   Building2, 
   LayoutDashboard, 
@@ -32,13 +35,14 @@ import { EmployeeHub } from './pages/EmployeeHub';
 import { TechPortal } from './pages/TechPortal';
 import { WarrantyClaims } from './pages/WarrantyClaims';
 import { EnterpriseHub } from './pages/EnterpriseHub';
+import { CustomerPortal } from './pages/CustomerPortal';
 
-function App() {
+const InternalPlatform = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
 
   const navItems = [
-    { path: '/', label: 'Overview', icon: LayoutDashboard },
+    { path: '/', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/crm', label: 'CRM / Customers', icon: Users },
     { path: '/sales', label: 'Sales / Quotes', icon: ShoppingCart },
     { path: '/service', label: 'Service / ROs', icon: Wrench },
@@ -49,16 +53,16 @@ function App() {
     { path: '/enterprise', label: 'Enterprise HQ', icon: Globe },
     { path: '/tech-portal', label: 'Tech Portal (Mobile)', icon: TabletSmartphone },
     { path: '/warranty', label: 'OEM Warranty', icon: ShieldAlert },
-    { path: '/settings', label: 'Dealership Rules', icon: SettingsIcon },
+    { path: '/settings', label: 'Settings', icon: SettingsIcon },
   ];
 
-
-
   return (
-    <DrilldownProvider>
-      <DrilldownModal />
-      <div className="app-container">
-      {/* Sidebar Navigation */}
+    <FilterProvider>
+      <WidgetProvider>
+        <DrilldownProvider>
+          <DrilldownModal />
+          <div className="app-container">
+        {/* Sidebar Navigation */}
       <nav className="sidebar" style={{ width: isSidebarOpen ? 'var(--sidebar-width)' : '80px', overflowX: 'hidden' }}>
         <div style={{ 
           height: 'var(--header-height)', 
@@ -145,6 +149,9 @@ function App() {
           </div>
         </header>
 
+        {/* Persistent Global Filter Injection */}
+        <GlobalFilterBar />
+
         {/* Scrollable Page Container */}
         <div className="page-scroll-area">
           <Routes>
@@ -165,7 +172,18 @@ function App() {
         </div>
       </main>
       </div>
-    </DrilldownProvider>
+        </DrilldownProvider>
+      </WidgetProvider>
+    </FilterProvider>
+  );
+};
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/portal/:customerId" element={<CustomerPortal />} />
+      <Route path="/*" element={<InternalPlatform />} />
+    </Routes>
   );
 }
 

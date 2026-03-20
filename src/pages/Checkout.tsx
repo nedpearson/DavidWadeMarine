@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ShoppingCart, Search, UserMinus, Plus, Minus, Trash2, CreditCard, Banknote, Ban } from 'lucide-react';
+import { useDrilldown } from '../contexts/DrilldownContext';
 
 interface CartItem {
   id: string;
@@ -11,6 +12,7 @@ interface CartItem {
 }
 
 export const Checkout = () => {
+  const { pushDrilldown } = useDrilldown();
   const [cart, setCart] = useState<CartItem[]>([
     { id: '1', sku: 'YAM-69J-13440-03-00', name: 'Yamaha Oil Filter F150', price: 29.99, qty: 2, discount: 0 },
     { id: '2', sku: 'SHOP-RAGS-BNDL', name: 'Shop Towel Bundle', price: 14.50, qty: 1, discount: 0 }
@@ -98,8 +100,11 @@ export const Checkout = () => {
           ) : (
             cart.map((item) => (
               <div key={item.id} style={{ display: 'grid', gridTemplateColumns: 'minmax(200px, 1fr) 150px 100px 50px', alignItems: 'center', padding: '1rem 1.5rem', borderBottom: '1px solid rgba(255,255,255,0.05)', backgroundColor: 'transparent', transition: 'background 0.2s ease' }}>
-                <div>
-                  <p style={{ margin: 0, fontWeight: 600, fontSize: '1.1rem' }}>{item.name}</p>
+                <div 
+                  onClick={() => pushDrilldown({ type: 'INVENTORY_ITEM', id: item.sku, title: item.name })}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <p style={{ margin: 0, fontWeight: 600, fontSize: '1.1rem', color: 'var(--color-primary)' }}>{item.name}</p>
                   <p style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>SKU: {item.sku}</p>
                 </div>
                 
@@ -130,7 +135,12 @@ export const Checkout = () => {
         <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
             <h3 style={{ fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--color-text-muted)' }}>Attached Entity</h3>
-            <p style={{ fontWeight: 600, fontSize: '1.25rem', margin: '0.25rem 0' }}>John Doe (Guest)</p>
+            <p 
+              onClick={() => pushDrilldown({ type: 'CUSTOMER_PROFILE', id: 'GUEST-01', title: 'John Doe Profile' })}
+              style={{ fontWeight: 600, fontSize: '1.25rem', margin: '0.25rem 0', cursor: 'pointer', color: 'var(--color-primary)' }}
+            >
+              John Doe (Guest)
+            </p>
             <span style={{ fontSize: '0.75rem', color: 'var(--color-success)', background: 'rgba(16, 185, 129, 0.1)', padding: '2px 6px', borderRadius: '4px' }}>Walk-in Status</span>
           </div>
           <button style={{ background: 'transparent', border: 'none', color: 'var(--color-text-muted)' }}><UserMinus size={20} /></button>

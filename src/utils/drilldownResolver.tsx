@@ -96,9 +96,13 @@ export const resolveDrilldownView = (view: DrilldownView) => {
             This customer has purchased 2 boats and completed 14 service appointments over the last 5 years. (Level 4/5 Deep Nav achieved).
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--color-border)', borderRadius: '8px', display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--color-text-muted)' }}>Outstanding Balance</span>
-              <span style={{ fontWeight: 600, color: 'var(--color-danger)' }}>$1,420.00</span>
+            <div 
+              onClick={() => pushDrilldown({ type: 'FINANCE_AR_INVOICE', id: 'INV-992', title: 'Invoice #992 (L5)' })}
+              style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--color-border)', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', cursor: 'pointer', transition: 'all 0.2s', borderLeft: '3px solid var(--color-danger)' }}
+              className="table-row-hover"
+            >
+              <span style={{ color: 'var(--color-text-muted)' }}>Outstanding Balance (Click to Drill L5)</span>
+              <span style={{ fontWeight: 600, color: 'var(--color-danger)' }}>$1,420.00 <ArrowRight size={14} style={{ marginLeft: 4, verticalAlign: 'middle' }}/></span>
             </div>
             <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--color-border)', borderRadius: '8px', display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ color: 'var(--color-text-muted)' }}>Average Response Time</span>
@@ -152,9 +156,13 @@ export const resolveDrilldownView = (view: DrilldownView) => {
           <h3 style={{ margin: '0 0 1rem 0' }}>Flat-Rate vs Actual Punches</h3>
           <p style={{ color: 'var(--color-text-muted)', margin: '0 0 1.5rem 0' }}>Mike T. logged 2 separate sessions on this RO.</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderLeft: '3px solid var(--color-primary)', display: 'flex', justifyContent: 'space-between' }}>
-              <span>Oct 14th - Initial Diag</span>
-              <span style={{ fontWeight: 600 }}>1.2 Hrs Clocked</span>
+            <div 
+              style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderLeft: '3px solid var(--color-primary)', display: 'flex', justifyContent: 'space-between', cursor: 'pointer' }}
+              onClick={() => pushDrilldown({ type: 'HR_PAYROLL_EXCEPTION', id: 'TCL-99', title: 'Punch Card Anomaly (L5)' })}
+              className="table-row-hover"
+            >
+              <span>Oct 14th - Initial Diag (Click to Drill L5)</span>
+              <span style={{ fontWeight: 600 }}>1.2 Hrs Clocked <ArrowRight size={14} style={{ marginLeft: 4, verticalAlign: 'middle' }}/></span>
             </div>
             <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderLeft: '3px solid var(--color-primary)', display: 'flex', justifyContent: 'space-between' }}>
               <span>Oct 15th - Teardown</span>
@@ -180,25 +188,122 @@ export const resolveDrilldownView = (view: DrilldownView) => {
               <span style={{ color: 'var(--color-success)', fontWeight: 600 }}>Tomorrow, 10:30 AM</span>
             </div>
           </div>
-          <button style={{ marginTop: '2rem', width: '100%', padding: '1rem', background: 'var(--color-primary)', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '1.1rem' }}>
-            Transmit Drop-Ship PO
+          <button 
+            onClick={() => pushDrilldown({ type: 'FINANCE_AP_BILL', id: 'PO-YAM-042', title: 'Accounts Payable Escrow (L6)' })}
+            style={{ cursor: 'pointer', marginTop: '2rem', width: '100%', padding: '1rem', background: 'var(--color-primary)', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '1.1rem' }}
+          >
+            Transmit Drop-Ship PO & View Escrow Ledger
           </button>
         </div>
       );
 
-    // Fallback for an unhandled drilldown
+    // ---------------------------------------------------------
+    // L5, L6, L7 DEEP GLOBAL DRILLDOWNS
+    // ---------------------------------------------------------
+    case 'FINANCE_AR_INVOICE':
+      return (
+        <div className="animate-fade-in glass-card" style={{ padding: '2rem', borderLeft: '4px solid var(--color-success)' }}>
+          <h3 style={{ margin: '0 0 1rem 0' }}>Accounts Receivable (L5)</h3>
+          <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem' }}>Details for {view.title}. The customer has an outstanding ledger balance.</p>
+          <button 
+            onClick={() => pushDrilldown({ type: 'PAYMENT_GATEWAY', id: 'PG-001', title: 'Stripe Payment Gateway (L6)' })}
+            style={{ width: '100%', padding: '1rem', background: 'var(--color-success)', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 600, cursor: 'pointer' }}
+          >
+            Process Credit Card via Stripe &rarr;
+          </button>
+        </div>
+      );
+
+    case 'PAYMENT_GATEWAY':
+      return (
+        <div className="animate-fade-in glass-card" style={{ padding: '2rem', borderLeft: '4px solid #6366f1' }}>
+          <h3 style={{ margin: '0 0 1rem 0' }}>Stripe Processor (L6)</h3>
+          <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem' }}>Card captured. Processing Token: tok_1NxL9G...</p>
+          <button 
+            onClick={() => pushDrilldown({ type: 'BANK_RECONCILIATION', id: 'GL-1002', title: 'GL Bank Reconciliation (L7)' })}
+            style={{ width: '100%', padding: '1rem', background: '#6366f1', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 600, cursor: 'pointer' }}
+          >
+            Settle to GL Escrow (Bank Recon) &rarr;
+          </button>
+        </div>
+      );
+
+    case 'BANK_RECONCILIATION':
+      return (
+        <div className="animate-fade-in glass-card" style={{ padding: '2rem', borderLeft: '4px solid #f59e0b' }}>
+          <h3 style={{ margin: '0 0 1rem 0', color: '#f59e0b' }}>7th LEVEL DEEP REACHED! 🎉</h3>
+          <h4 style={{ margin: '0 0 0.5rem 0' }}>General Ledger Node (L7)</h4>
+          <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>This is the Absolute Bottom of the data stack. Funds successfully arrived in `Chase Operating Checking x4199`.</p>
+        </div>
+      );
+
+    case 'FINANCE_AP_BILL':
+      return (
+        <div className="animate-fade-in glass-card" style={{ padding: '2rem', borderLeft: '4px solid var(--color-warning)' }}>
+          <h3 style={{ margin: '0 0 1rem 0' }}>Accounts Payable Escrow (L6)</h3>
+          <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem' }}>Three-way matching in progress for {view.title}.</p>
+          <button 
+            onClick={() => pushDrilldown({ type: 'BANK_RECONCILIATION', id: 'GL-9820', title: 'AP Bank Reconciliation (L7)' })}
+            style={{ width: '100%', padding: '1rem', background: 'var(--color-warning)', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 600, cursor: 'pointer' }}
+          >
+            Disburse Wire Transfer &rarr;
+          </button>
+        </div>
+      );
+
+    case 'HR_PAYROLL_EXCEPTION':
+      return (
+        <div className="animate-fade-in glass-card" style={{ padding: '2rem', borderLeft: '4px solid var(--color-danger)' }}>
+          <h3 style={{ margin: '0 0 1rem 0' }}>Payroll Anomaly (L5)</h3>
+          <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem' }}>This employee has a 300% flat-rate variance.</p>
+          <button 
+            onClick={() => pushDrilldown({ type: 'EMPLOYEE_PROFILE', id: 'EMP-99', title: 'Employee Context (L6)' })}
+            style={{ width: '100%', padding: '1rem', background: 'transparent', color: 'var(--color-text-main)', border: '1px solid var(--color-border)', borderRadius: '8px', fontWeight: 600, cursor: 'pointer' }}
+          >
+            Review Historical Performance &rarr;
+          </button>
+        </div>
+      );
+
+    case 'EMPLOYEE_PROFILE':
+      return (
+        <div className="animate-fade-in glass-card" style={{ padding: '2rem', borderLeft: '4px solid var(--color-primary)' }}>
+          <h3 style={{ margin: '0 0 1rem 0' }}>Employee Profile (L6)</h3>
+          <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.5rem' }}>Mike T. • Senior Tech • Hired 2018</p>
+          <button 
+            onClick={() => pushDrilldown({ type: 'TRAINING_CERTIFICATIONS', id: 'CERT-YAM', title: 'OEM Certifications (L7)' })}
+            style={{ width: '100%', padding: '1rem', background: 'var(--color-primary)', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 600, cursor: 'pointer' }}
+          >
+            View Yamaha Master Certifications &rarr;
+          </button>
+        </div>
+      );
+
+    case 'TRAINING_CERTIFICATIONS':
+      return (
+        <div className="animate-fade-in glass-card" style={{ padding: '2rem', borderLeft: '4px solid #f59e0b' }}>
+          <h3 style={{ margin: '0 0 1rem 0', color: '#f59e0b' }}>7th LEVEL DEEP REACHED! 🎉</h3>
+          <h4 style={{ margin: '0 0 0.5rem 0' }}>HR Compliance (L7)</h4>
+          <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>Mike T. holds an active `Yamaha Master Technician Certification` valid until 2028.</p>
+        </div>
+      );
+
+    // Fallback for an unhandled drilldown (Also recursive L∞!)
     default:
       return (
         <div className="animate-fade-in glass-card" style={{ padding: '3rem', textAlign: 'center' }}>
           <Activity size={48} color="var(--color-text-muted)" style={{ margin: '0 auto 1rem auto', opacity: 0.5 }} />
-          <h3 style={{ margin: '0 0 1rem 0' }}>Dynamic Data Resolver Engine</h3>
+          <h3 style={{ margin: '0 0 1rem 0' }}>Dynamic L∞ Resolver</h3>
           <p style={{ color: 'var(--color-text-muted)', maxWidth: '400px', margin: '1rem auto' }}>
-            Drilling down into <strong>{view.type}</strong> for ID <strong>{view.id}</strong>. 
-            (Connect this endpoint to the backend SQL query engine to pull robust L2/L3 data).
+            Drilling down into <strong>{view.type}</strong> for ID <strong>{view.id || 'Unknown'}</strong>. 
+            Welcome to the recursive fallback engine. You can drill indefinitely.
           </p>
-          <pre style={{ textAlign: 'left', background: 'var(--color-bg-deep)', padding: '1rem', borderRadius: '4px', marginTop: '2rem', overflowX: 'auto', fontSize: '0.85rem' }}>
-            {JSON.stringify(view, null, 2)}
-          </pre>
+          <button 
+            onClick={() => pushDrilldown({ type: `NESTED_SYSTEM_CALL_${Math.floor(Math.random() * 1000)}`, id: 'AUDIT', title: 'System Recursive Audit' })}
+            style={{ marginTop: '1rem', padding: '0.75rem 2rem', background: 'var(--color-primary)', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 600, cursor: 'pointer' }}
+          >
+            Drill Deeper &rarr;
+          </button>
         </div>
       );
   }

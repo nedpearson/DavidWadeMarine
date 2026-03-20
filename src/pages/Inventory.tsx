@@ -142,6 +142,12 @@ export const Inventory = () => {
                                   <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Compatible Drop-In Replacement</span>
                                 </div>
                                 <div style={{ display: 'flex', gap: '1rem', textAlign: 'right' }}>
+                                  <button 
+                                    onClick={() => pushDrilldown({ type: 'INVENTORY_ITEM', id: 'SIERRA-18-7919', title: 'Sierra Marine - 18-7919' })}
+                                    style={{ padding: '4px 12px', background: 'var(--color-primary)', border: 'none', color: '#fff', borderRadius: '4px', fontSize: '0.8rem', cursor: 'pointer' }}
+                                  >
+                                    View Master Engine
+                                  </button>
                                   <div>
                                     <span style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)', display: 'block' }}>QoH</span>
                                     <span style={{ fontWeight: 600, color: 'var(--color-success)' }}>32 Units</span>
