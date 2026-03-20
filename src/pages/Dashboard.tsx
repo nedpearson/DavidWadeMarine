@@ -10,7 +10,8 @@ import {
   CalendarCheck,
   ServerCrash,
   LayoutDashboard,
-  Activity
+  Activity,
+  FileSignature
 } from 'lucide-react';
 import { useDrilldown } from '../contexts/DrilldownContext';
 import { useWidgets } from '../contexts/WidgetContext';
@@ -18,12 +19,65 @@ import type { WidgetId } from '../contexts/WidgetContext';
 
 // --- MICRO-WIDGET COMPONENTS ---
 
+const ActionCenterWidget = () => {
+  const { pushDrilldown } = useDrilldown();
+  return (
+    <div className="card animate-fade-in stagger-1" style={{ width: '100%', borderTop: '4px solid var(--color-danger)' }}>
+      <div className="card-header">
+        <h3 className="card-title" style={{ color: 'var(--color-danger)' }}><AlertTriangle color="var(--color-danger)" /> Immediate Action Center</h3>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1rem' }}>
+        
+        {/* Action 1 */}
+        <div 
+          style={{ padding: '1rem', background: 'rgba(239, 68, 68, 0.05)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '8px', cursor: 'pointer', display: 'flex', gap: '12px', alignItems: 'center' }} 
+          onClick={() => pushDrilldown({ type: 'RO_DETAIL', id: 'RO-332', title: 'Pending Client Approval' })}
+        >
+          <FileSignature color="var(--color-danger)" />
+          <div style={{ flex: 1 }}>
+             <div style={{ fontWeight: 600 }}>Quote Approval Needed</div>
+             <div style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>M. Smith (Yamaha 150 Water Pump)</div>
+          </div>
+          <button style={{ padding: '6px 12px', background: 'var(--color-danger)', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem' }}>Review Quote</button>
+        </div>
+
+        {/* Action 2 */}
+        <div 
+          style={{ padding: '1rem', background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.2)', borderRadius: '8px', cursor: 'pointer', display: 'flex', gap: '12px', alignItems: 'center' }} 
+          onClick={() => pushDrilldown({ type: 'VENDOR_PO', id: 'PO-99', title: 'Emergency Stock Run' })}
+        >
+          <ServerCrash color="var(--color-warning)" />
+          <div style={{ flex: 1 }}>
+             <div style={{ fontWeight: 600 }}>Critical Stockout Warning</div>
+             <div style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>Yamaha 10W-30 Oil (0 Qts left)</div>
+          </div>
+           <button style={{ padding: '6px 12px', background: 'var(--color-warning)', color: '#000', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem' }}>Draft PO</button>
+        </div>
+
+         {/* Action 3 */}
+         <div 
+          style={{ padding: '1rem', background: 'rgba(63, 136, 197, 0.05)', border: '1px solid rgba(63, 136, 197, 0.2)', borderRadius: '8px', cursor: 'pointer', display: 'flex', gap: '12px', alignItems: 'center' }} 
+          onClick={() => pushDrilldown({ type: 'HR_PAYROLL_EXCEPTION', id: 'HR-22', title: 'Timepunch Variance' })}
+        >
+          <Clock color="var(--color-accent)" />
+          <div style={{ flex: 1 }}>
+             <div style={{ fontWeight: 600 }}>Unapproved Timecard</div>
+             <div style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>Tech: Dave S. (+ 2.4 Hrs Variance)</div>
+          </div>
+           <button style={{ padding: '6px 12px', background: 'var(--color-accent)', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 600, fontSize: '0.8rem' }}>Resolve HR</button>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 import { InteractiveCalendar } from '../components/InteractiveCalendar';
 
 const ServiceProgressWidget = () => {
   const { pushDrilldown } = useDrilldown();
   return (
-    <div className="card animate-fade-in stagger-2" style={{ width: '100%', marginBottom: '1rem' }}>
+    <div className="card animate-fade-in stagger-2" style={{ width: '100%' }}>
       <div className="card-header">
         <h3 className="card-title"><Activity color="var(--color-accent)" /> Active Job Tracker</h3>
       </div>
@@ -59,7 +113,7 @@ const ServiceProgressWidget = () => {
 const FinanceKpiWidget = () => {
   const { pushDrilldown } = useDrilldown();
   return (
-    <div className="card animate-fade-in stagger-1" style={{ width: '100%', marginBottom: '1rem' }}>
+    <div className="card animate-fade-in stagger-1" style={{ width: '100%' }}>
       <div className="card-header">
         <h3 className="card-title"><TrendingUp color="var(--color-success)" /> Global Financial Data</h3>
       </div>
@@ -84,7 +138,7 @@ const FinanceKpiWidget = () => {
 const ServiceKanbanWidget = () => {
   const { pushDrilldown } = useDrilldown();
   return (
-    <div className="card animate-fade-in stagger-2" style={{ width: '100%', marginBottom: '1rem' }}>
+    <div className="card animate-fade-in stagger-2" style={{ width: '100%' }}>
       <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between' }}>
         <h3 className="card-title"><Wrench color="#3b82f6" /> Active Repair Pipeline</h3>
         <span className="badge" style={{ background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa' }}>24 Open ROs</span>
@@ -109,7 +163,7 @@ const ServiceKanbanWidget = () => {
 const EnterpriseTransfersWidget = () => {
   const { pushDrilldown } = useDrilldown();
   return (
-    <div className="card animate-fade-in stagger-3" style={{ width: '100%', marginBottom: '1rem' }}>
+    <div className="card animate-fade-in stagger-3" style={{ width: '100%' }}>
       <div className="card-header">
         <h3 className="card-title"><Building2 color="#8b5cf6" /> Inter-Store Logistics</h3>
       </div>
@@ -129,7 +183,7 @@ const EnterpriseTransfersWidget = () => {
 const WarrantyClaimsWidget = () => {
   const { pushDrilldown } = useDrilldown();
   return (
-    <div className="card animate-fade-in" style={{ width: '100%', marginBottom: '1rem' }}>
+    <div className="card animate-fade-in" style={{ width: '100%' }}>
       <div className="card-header">
         <h3 className="card-title"><ShieldAlert color="#f59e0b" /> OEM B2B Warranty Status</h3>
       </div>
@@ -150,7 +204,7 @@ const WarrantyClaimsWidget = () => {
 const CrmLeadsWidget = () => {
   const { pushDrilldown } = useDrilldown();
   return (
-    <div className="card animate-fade-in" style={{ width: '100%', marginBottom: '1rem' }}>
+    <div className="card animate-fade-in" style={{ width: '100%' }}>
       <div className="card-header">
         <h3 className="card-title"><Users color="#10b981" /> Sales Funnel Tracker</h3>
       </div>
@@ -169,7 +223,7 @@ const CrmLeadsWidget = () => {
 const InventoryAlertsWidget = () => {
   const { pushDrilldown } = useDrilldown();
   return (
-    <div className="card animate-fade-in" style={{ width: '100%', marginBottom: '1rem' }}>
+    <div className="card animate-fade-in" style={{ width: '100%' }}>
       <div className="card-header">
         <h3 className="card-title"><ServerCrash color="#ef4444" /> Supply Constraints</h3>
       </div>
@@ -190,7 +244,7 @@ const InventoryAlertsWidget = () => {
 const PayrollAnomaliesWidget = () => {
   const { pushDrilldown } = useDrilldown();
   return (
-    <div className="card animate-fade-in" style={{ width: '100%', marginBottom: '1rem' }}>
+    <div className="card animate-fade-in" style={{ width: '100%' }}>
       <div className="card-header">
         <h3 className="card-title"><Clock color="#f43f5e" /> HR Payroll Warnings</h3>
       </div>
@@ -215,6 +269,7 @@ export const Dashboard = () => {
 
   const renderWidget = (id: WidgetId) => {
     switch (id) {
+      case 'ACTION_CENTER': return <ActionCenterWidget key={id} />;
       case 'DAILY_CALENDAR': return <InteractiveCalendar key={id} />;
       case 'SERVICE_PROGRESS': return <ServiceProgressWidget key={id} />;
       case 'FINANCE_KPI': return <FinanceKpiWidget key={id} />;
@@ -242,7 +297,12 @@ export const Dashboard = () => {
           <p style={{ color: 'var(--color-text-muted)' }}>Navigate to Settings &rarr; Dashboard Preferences to enable widgets.</p>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', 
+          gap: '1rem',
+          alignItems: 'start'
+        }}>
           {activeWidgets.map(widget => renderWidget(widget.id))}
         </div>
       )}

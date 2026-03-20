@@ -49,12 +49,12 @@ export const InteractiveCalendar = () => {
     const activeEvents = MOCK_EVENTS.filter(e => e.dayOffset === dateOffset);
 
     return (
-      <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '2px', background: 'var(--color-border)', border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden' }}>
+      <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'var(--color-border)', border: '1px solid var(--color-border)', borderRadius: '6px', overflowY: 'auto', maxHeight: '280px' }}>
         {hours.map(hour => {
           const eventsInHour = activeEvents.filter(e => e.startHour <= hour && e.endHour > hour);
           return (
-            <div key={hour} style={{ display: 'flex', background: 'var(--color-bg-panel)', minHeight: '60px' }}>
-              <div style={{ width: '80px', padding: '0.75rem', borderRight: '1px solid var(--color-border)', color: 'var(--color-text-muted)', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
+            <div key={hour} style={{ display: 'flex', background: 'var(--color-bg-panel)', minHeight: '40px' }}>
+              <div style={{ width: '60px', padding: '0.5rem', borderRight: '1px solid var(--color-border)', color: 'var(--color-text-muted)', fontSize: '0.75rem', fontWeight: 600, display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
                 {hour > 12 ? `${hour - 12} PM` : hour === 12 ? '12 PM' : `${hour} AM`}
               </div>
               <div style={{ flex: 1, padding: '4px', display: 'flex', gap: '8px', position: 'relative' }}>
@@ -98,7 +98,7 @@ export const InteractiveCalendar = () => {
     const weekAxis = [0, 1, 2, 3, 4, 5, 6];
     
     return (
-      <div className="animate-fade-in" style={{ display: 'flex', gap: '1px', background: 'var(--color-border)', border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden', minHeight: '400px' }}>
+      <div className="animate-fade-in" style={{ display: 'flex', gap: '1px', background: 'var(--color-border)', border: '1px solid var(--color-border)', borderRadius: '6px', overflowX: 'auto', minHeight: '220px', maxHeight: '280px' }}>
         {weekAxis.map(i => {
           // A bit of mock math to distribute events across the week based on base offset
           const localDayOffset = dateOffset * 7 + i - 3; // Center the week
@@ -148,15 +148,15 @@ export const InteractiveCalendar = () => {
     return (
       <div className="animate-fade-in" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '1px', background: 'var(--color-border)', border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden' }}>
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
-          <div key={d} style={{ background: 'rgba(255,255,255,0.02)', padding: '0.5rem', textAlign: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>{d}</div>
+          <div key={d} style={{ background: 'rgba(255,255,255,0.02)', padding: '0.25rem', textAlign: 'center', fontSize: '0.65rem', fontWeight: 600, color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>{d}</div>
         ))}
         {cells.map(i => {
            const isToday = i === 18; // Fake "Today" position
            const hasEvents = i === 18 || i === 19 || i === 17 || i === 20;
            
            return (
-             <div key={i} style={{ aspectRatio: '1', background: 'var(--color-bg-panel)', padding: '4px', display: 'flex', flexDirection: 'column' }}>
-               <div style={{ textAlign: 'right', padding: '4px', fontSize: '0.85rem', fontWeight: isToday ? 700 : 400, color: isToday ? '#fff' : 'var(--color-text-muted)' }}>
+             <div key={i} style={{ minHeight: '45px', background: 'var(--color-bg-panel)', padding: '2px', display: 'flex', flexDirection: 'column' }}>
+               <div style={{ textAlign: 'right', padding: '2px 4px', fontSize: '0.7rem', fontWeight: isToday ? 700 : 400, color: isToday ? '#fff' : 'var(--color-text-muted)' }}>
                  {isToday && <span style={{ background: 'var(--color-primary)', padding: '2px 6px', borderRadius: '12px' }}>{i - 4}</span>}
                  {!isToday && <span>{i < 4 ? 27 + i : i - 4}</span>}
                </div>
@@ -183,7 +183,7 @@ export const InteractiveCalendar = () => {
 
 
   return (
-    <div className="card animate-fade-in stagger-1" style={{ width: '100%', marginBottom: '1rem' }}>
+    <div className="card animate-fade-in stagger-1" style={{ width: '100%' }}>
       <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h3 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <CalendarIcon color="var(--color-primary)" /> 
