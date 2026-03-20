@@ -14,7 +14,10 @@ import {
   Bell,
   Search,
   Menu,
-  DollarSign
+  DollarSign,
+  TabletSmartphone,
+  ShieldAlert,
+  Globe
 } from 'lucide-react';
 
 import { Dashboard } from './pages/Dashboard';
@@ -26,6 +29,9 @@ import { Settings } from './pages/Settings';
 import { Analytics } from './pages/Analytics';
 import { FinanceOperations } from './pages/Finance';
 import { EmployeeHub } from './pages/EmployeeHub';
+import { TechPortal } from './pages/TechPortal';
+import { WarrantyClaims } from './pages/WarrantyClaims';
+import { EnterpriseHub } from './pages/EnterpriseHub';
 
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -40,6 +46,9 @@ function App() {
     { path: '/finance', label: 'Operational Finance', icon: DollarSign },
     { path: '/employees', label: 'Employee Hub', icon: Users },
     { path: '/analytics', label: 'Reports', icon: PieChart },
+    { path: '/enterprise', label: 'Enterprise HQ', icon: Globe },
+    { path: '/tech-portal', label: 'Tech Portal (Mobile)', icon: TabletSmartphone },
+    { path: '/warranty', label: 'OEM Warranty', icon: ShieldAlert },
     { path: '/settings', label: 'Dealership Rules', icon: SettingsIcon },
   ];
 
@@ -147,6 +156,9 @@ function App() {
             <Route path="/finance" element={<FinanceOperations />} />
             <Route path="/employees" element={<EmployeeHub />} />
             <Route path="/analytics" element={<Analytics />} />
+            <Route path="/enterprise" element={<EnterpriseHub />} />
+            <Route path="/tech-portal" element={<TechPortal />} />
+            <Route path="/warranty" element={<WarrantyClaims />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--color-text-muted)', fontSize: '1.2rem' }}>Module Loading Infrastructure...</div>} />
           </Routes>

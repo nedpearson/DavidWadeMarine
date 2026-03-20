@@ -263,7 +263,15 @@ export const ServiceBoard = () => {
             
             <div style={{ padding: '1.5rem', borderTop: '1px solid var(--color-border)', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
               <button onClick={() => setSelectedRO(null)} style={{ padding: '0.75rem 1.5rem', background: 'transparent', border: '1px solid var(--color-border)', color: '#fff', borderRadius: '4px', fontWeight: 600 }}>Save Draft</button>
-              <button style={{ padding: '0.75rem 1.5rem', background: 'var(--color-primary)', border: 'none', color: '#fff', borderRadius: '4px', fontWeight: 600 }}>Commit Split & Generate OEM XML</button>
+              <button 
+                onClick={() => {
+                  setSelectedRO(null);
+                  pushDrilldown({ type: 'WARRANTY_CLAIM', id: 'W-9095', title: 'Submit OEM Claim' });
+                }}
+                style={{ padding: '0.75rem 1.5rem', background: 'var(--color-primary)', border: 'none', color: '#fff', borderRadius: '4px', fontWeight: 600, cursor: 'pointer' }}
+              >
+                Commit Split & Generate OEM XML
+              </button>
             </div>
           </div>
         </div>
